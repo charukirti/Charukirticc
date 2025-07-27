@@ -36,21 +36,28 @@ export default function Navigation() {
         return;
       }
 
+      const isMobile = window.innerWidth < 768;
       const observerOptions = {
         root: null,
-        rootMargin: "-20% 0px -70% 0px",
-        threshold: 0.1,
+        rootMargin: isMobile ? "0px 0px -50% 0px" : "-20% 0px -70% 0px",
+        threshold: isMobile ? [0.1, 0.3, 0.5] : 0.1,
       };
 
       const observerCallback = (entries: IntersectionObserverEntry[]) => {
+        let mostVisible = { entry: null as IntersectionObserverEntry | null, ratio: 0 };
+        
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const section = sections.find((s) => s.element === entry.target);
-            if (section) {
-              setActiveItem(section.label);
-            }
+          if (entry.isIntersecting && entry.intersectionRatio > mostVisible.ratio) {
+            mostVisible = { entry, ratio: entry.intersectionRatio };
           }
         });
+
+        if (mostVisible.entry) {
+          const section = sections.find((s) => s.element === mostVisible.entry?.target);
+          if (section) {
+            setActiveItem(section.label);
+          }
+        }
       };
 
       observer = new IntersectionObserver(observerCallback, observerOptions);
