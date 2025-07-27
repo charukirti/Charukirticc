@@ -13,79 +13,75 @@ export default function Navigation() {
   const [activeItem, setActiveItem] = useState("Home");
 
   useEffect(() => {
-    let observer: IntersectionObserver | null = null;
-    let retryCount = 0;
-    const maxRetries = 10;
-
-    const initObserver = () => {
+    const handleScroll = () => {
       const sections = navItems
         .map((item) => ({
-          id: item.href.substring(1),
           label: item.label,
           element: document.getElementById(item.href.substring(1)),
         }))
         .filter((section) => section.element);
 
-      if (sections.length < navItems.length && retryCount < maxRetries) {
-        retryCount++;
-        setTimeout(initObserver, 200);
-        return;
-      }
+      if (sections.length === 0) return;
 
-      if (sections.length === 0) {
-        return;
-      }
+      let currentSection = sections[0].label;
+      let maxVisiblity = 0;
 
-      const isMobile = window.innerWidth < 768;
-      const observerOptions = {
-        root: null,
-        rootMargin: isMobile ? "0px 0px -50% 0px" : "-20% 0px -70% 0px",
-        threshold: isMobile ? [0.1, 0.3, 0.5] : 0.1,
-      };
+      sections.forEach(({ label, element }) => {
+        if (!element) return;
 
-      const observerCallback = (entries: IntersectionObserverEntry[]) => {
-        let mostVisible = { entry: null as IntersectionObserverEntry | null, ratio: 0 };
-        
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > mostVisible.ratio) {
-            mostVisible = { entry, ratio: entry.intersectionRatio };
-          }
-        });
+        const rect = element.getBoundingClientRect();
 
-        if (mostVisible.entry) {
-          const section = sections.find((s) => s.element === mostVisible.entry?.target);
-          if (section) {
-            setActiveItem(section.label);
-          }
-        }
-      };
+        const windowHeight = window.innerHeight;
 
-      observer = new IntersectionObserver(observerCallback, observerOptions);
+        // calculating visible section
 
-      sections.forEach((section) => {
-        if (section.element && observer) {
-          observer.observe(section.element);
+        const visibleTop = Math.max(
+          0,
+          Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0)
+        );
+        const visiblityRatio = visibleTop / Math.min(rect.height, windowHeight);
+
+        if (
+          rect.bottom > 0 &&
+          rect.top < windowHeight &&
+          visiblityRatio > maxVisiblity
+        ) {
+          maxVisiblity = visiblityRatio;
+          currentSection = label;
         }
       });
+      setActiveItem(currentSection);
     };
 
-    const timeout = setTimeout(initObserver, 300);
+    let ticking = false;
 
-    return () => {
-      clearTimeout(timeout);
-      if (observer) {
-        observer.disconnect();
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+
+          ticking = false;
+        });
+
+        ticking = true;
       }
+    };
+
+    window.addEventListener("scroll", throttledScroll, { passive: true });
+    handleScroll();
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", throttledScroll);
+      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
   const handleNavClick = (label: string, href: string) => {
     setActiveItem(label);
-    
-    // Smooth scroll to section
+
     const element = document.getElementById(href.substring(1));
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
