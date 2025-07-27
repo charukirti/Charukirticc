@@ -38,7 +38,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="max-w-3xl py-16 px-6 md:px-12 lg:px-0 space-y-10"
+      className="max-w-3xl py-16 px-4 md:px-12 lg:px-0 space-y-10"
     >
       <div className="relative" aria-label="section header">
         <h2 className="text-2xl text-teal-400">

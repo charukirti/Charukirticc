@@ -1,14 +1,25 @@
+import { MapPin } from "lucide-react";
+
 export default function Header() {
   return (
-    <header className="lg:flex lg:max-h-screen lg:items-center gap-10 lg:py-24 lg:px-8" id="home">
+    <header
+      className="lg:flex lg:max-h-screen px-4 lg:items-center gap-10 lg:py-24 lg:px-8"
+      id="home"
+    >
       <section className="space-y-6 max-w-lg" aria-label="Intro and contact">
         <div className="space-y-3">
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl leading-tight">
             Charukirti Chougule
           </h1>
-          <h2 className="text-lg font-medium tracking-tight text-teal-400 sm:text-xl">
-            Frontend Developer
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <h2 className="text-lg font-medium tracking-tight text-teal-400 sm:text-xl">
+              Frontend Developer
+            </h2>
+            <div className="flex items-center gap-1.5 text-zinc-400">
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm">Sangli, India</span>
+            </div>
+          </div>
         </div>
 
         <p className="text-zinc-400 leading-relaxed text-base max-w-md">
@@ -29,18 +40,21 @@ export default function Header() {
         </address>
 
         <div className="flex gap-4 pt-2">
-          <button
+          <a
+            href="#projects"
             type="button"
             className="bg-teal-600 hover:bg-teal-500 text-white px-2 md:px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
           >
             View Projects
-          </button>
-          <button
+          </a>
+          <a
+            href="/Charukirti-Chougule_Resume.pdf"
+            download="Charukirti_Chougule_Resume.pdf"
             type="button"
             className="border border-zinc-600 hover:border-teal-400 text-zinc-400 hover:text-teal-400 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200"
           >
             Download Resume
-          </button>
+          </a>
         </div>
       </section>
 

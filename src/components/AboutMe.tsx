@@ -1,7 +1,7 @@
 export default function AboutMe() {
   return (
     <section
-      className=" max-w-3xl py-16 px-6 md:px-12 lg:px-0 space-y-8"
+      className=" max-w-3xl py-16 px-4 md:px-12 lg:px-0 space-y-8"
       id="about"
     >
       <div className="relative" aria-label="section header">
