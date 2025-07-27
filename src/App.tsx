@@ -1,6 +1,7 @@
 import AboutMe from "./components/AboutMe";
 import Header from "./components/Header";
 import Navigation from "./components/Navigation";
+import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
       <AboutMe />
       <Navigation />
       <Skills />
+      <Projects />
     </div>
   );
 }

@@ -4,3 +4,8 @@
   --font-sans: "Inter", sans-serif;
   --font-fira: "Fira Code", monospace;
 }
+
+
+html {
+  scroll-behavior: smooth;
+}
