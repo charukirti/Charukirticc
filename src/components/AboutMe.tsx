@@ -46,6 +46,17 @@ export default function AboutMe() {
           developer job where I can use these skills and keep learning.
         </p>
       </div>
+
+      <div className="mt-8">
+        <h3 className="text-lg text-teal-400 mb-4 font-fira">
+          GitHub Activity
+        </h3>
+        <img
+          src="https://ghchart.rshah.org/06923E/charukirti"
+          alt="GitHub Contribution Graph"
+          className="w-full rounded-lg"
+        />
+      </div>
     </section>
   );
 }
